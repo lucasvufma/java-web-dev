@@ -1,6 +1,10 @@
 package com.learningSB.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Produto implements Serializable{
 	
@@ -18,8 +25,14 @@ public class Produto implements Serializable{
 	private String nome;
 	private double preço;
 	
+	//Produto também precisa conhecer os itens
+	@OneToMany(mappedBy="id.produto")
+	@JsonIgnore //Produto não necessita serializar os itens de pedido isto é não é correto ele conhecer a lista de pedidos 
+	private Set<ItemPedido> itens = new HashSet<>();
+	
 	@ManyToOne
 	@JoinColumn(name= "categoria_id")
+	@JsonIgnore
 	private Categoria categoria;
 	
 	public Produto() {
@@ -29,6 +42,16 @@ public class Produto implements Serializable{
 		this.nome=nome;
 		this.preço=preço;
 	}
+	
+	@JsonIgnore 
+	public List<Pedido> getPedidos(){
+		List<Pedido> lista = new ArrayList<>();
+			for(ItemPedido i : itens) {
+				lista.add(i.getPedido());
+			}
+		return lista;
+		}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -75,6 +98,12 @@ public class Produto implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
 	}
 
 }

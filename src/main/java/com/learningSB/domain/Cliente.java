@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.learningSB.domain.enums.TipoCliente;
 
 @Entity
@@ -19,7 +21,7 @@ public class Cliente implements Serializable{
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	private String nome;
 	private String email;
 	private String CPF;
@@ -29,11 +31,15 @@ public class Cliente implements Serializable{
 	private String cidade;
 	private String estado;
 	
-	@OneToMany(mappedBy="cliente",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="cliente")
+	@JsonManagedReference
 	private List<Endereco> enderecos = new ArrayList<>();
 	
-	public Cliente(String cidade,String estado,int id, String nome, String email, String cPF, TipoCliente tipo, String telefone1, String telefone2,
-			List<Endereco> enderecos) {
+	@OneToMany(mappedBy="cliente")
+	@JsonBackReference
+	private List<Pedido>  pedidos= new ArrayList<>();
+	
+	public Cliente(String cidade,String estado,Integer id, String nome, String email, String cPF, TipoCliente tipo, String telefone1, String telefone2 ) {
 		super();
 		this.setCidade(cidade);
 		this.setEstado(estado);
@@ -44,14 +50,16 @@ public class Cliente implements Serializable{
 		this.tipo = tipo.getCod();
 		this.telefone1 = telefone1;
 		this.telefone2 = telefone2;
-		this.enderecos = enderecos;
 	}
 	
 	public Cliente() {
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
+	}
+	public List<Endereco> getEnderecos() {
+		return enderecos;
 	}
 
 	public void setId(int id) {
@@ -76,6 +84,10 @@ public class Cliente implements Serializable{
 
 	public String getCPF() {
 		return CPF;
+	}
+	
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
 	}
 
 	public void setCPF(String cPF) {
@@ -143,6 +155,10 @@ public class Cliente implements Serializable{
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
 	
 
 }
