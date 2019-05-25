@@ -21,6 +21,7 @@ public class PedidoService {
 							"Objeto não encontrado! Id: "+id+" Tipo: "+Pedido.class.getName()
 							));
 		}
+		
 
 	}
 

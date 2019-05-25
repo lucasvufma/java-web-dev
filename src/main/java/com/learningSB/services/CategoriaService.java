@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.learningSB.domain.Categoria;
+import com.learningSB.domain.Cliente;
 import com.learningSB.dto.CategoriaDTO;
 import com.learningSB.repositories.CategoriaRepository;
 import com.learningSB.services.exception.DataIntegrityException;
@@ -32,7 +33,6 @@ public class CategoriaService {
 	}
 
 	public Categoria insert(Categoria obj) {
-		// TODO Auto-generated method stub
 		obj.setId(null); //se nao tiver null no id, o save vai atualizar um objeto e nao criar um novo
 		return repository.save(obj);
 	}
@@ -41,11 +41,21 @@ public class CategoriaService {
 		return repository.findAll();
 	}
 
-
+/*
 	public Categoria update(Categoria obj) {
 		find(obj.getId());
 		// TODO Auto-generated method stub
 		return repository.save(obj);  //veja que o metodo save é o mesmo, só que ele verifica se é nulo ou não, se é nulo ele insere, se não é nulo ele atualiza.
+	}*/
+	public Categoria update(Categoria obj) {
+		Categoria newObj = find(obj.getId());
+		updateData(newObj,obj);
+		// TODO Auto-generated method stub
+		return repository.save(newObj);  //veja que o metodo save é o mesmo, só que ele verifica se é nulo ou não, se é nulo ele insere, se não é nulo ele atualiza.
+	}
+	
+	private void updateData(Categoria newObj,Categoria obj) {
+		newObj.setNome(obj.getNome());
 	}
 
 	public void deleteById(Integer id) {

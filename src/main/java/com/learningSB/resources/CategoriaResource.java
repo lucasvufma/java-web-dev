@@ -42,21 +42,33 @@ public class CategoriaResource {
 		return ResponseEntity.created(uri).build(); //created codigo 201 http
 	} 
 	//@RequestBody faz meu Json ser convertido para Objeto.
+	/*
 	@RequestMapping(value="/{id}",method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id){
 		obj.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
+	}*/
+	
+	
+	// Caso eu queira dar update apenas nos atributos que fazem sentido serem atualizados no caso o DTO, alterar isso em todos os resources, e deve ser implementado o fromDTO nos services
+	@RequestMapping(value="/{id}",method=RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody CategoriaDTO objDTO, @PathVariable Integer id){
+		objDTO.setId(id);
+		Categoria obj = service.fromDTO(objDTO);
+		obj = service.update(obj);
+		return ResponseEntity.noContent().build();
 	}
 	
-	@RequestMapping(method=RequestMethod.DELETE)
+	
+	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		service.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<?> findAll(@PathVariable Integer id){
+	public ResponseEntity<?> findAll(){
 		List<Categoria> objs = service.findAll();
 		List<CategoriaDTO> listDTO = objs.stream().map(object -> new CategoriaDTO(object)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);

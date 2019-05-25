@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,6 +24,7 @@ public class Cliente implements Serializable{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	@Column(unique=true)
 	private String email;
 	private String CPF;
 	private Integer tipo;
@@ -31,7 +33,7 @@ public class Cliente implements Serializable{
 	private String cidade;
 	private String estado;
 	
-	@OneToMany(mappedBy="cliente")
+	@OneToMany(mappedBy="cliente",cascade=CascadeType.ALL)
 	@JsonManagedReference
 	private List<Endereco> enderecos = new ArrayList<>();
 	
@@ -47,7 +49,7 @@ public class Cliente implements Serializable{
 		this.nome = nome;
 		this.email = email;
 		CPF = cPF;
-		this.tipo = tipo.getCod();
+		this.tipo = tipo==null ? null :tipo.getCod();
 		this.telefone1 = telefone1;
 		this.telefone2 = telefone2;
 	}
@@ -62,7 +64,7 @@ public class Cliente implements Serializable{
 		return enderecos;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
