@@ -49,6 +49,14 @@ public class LearningSbApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		Categoria cat1 = new Categoria(null,"Informatica");
+		Categoria cat2 = new Categoria(null,"Cama");
+		Categoria cat3 = new Categoria(null,"Mesa");
+		Categoria cat4 = new Categoria(null,"Banho");
+		Categoria cat5 = new Categoria(null,"Perfumes");
+		Categoria cat6 = new Categoria(null,"LALALLAA");
+		Categoria cat7 = new Categoria(null,"categoria troll");
+		Categoria cat8 = new Categoria(null,"aff");
+		Categoria cat9 = new Categoria(null,"lul");
 		Produto p1 = new Produto(null,"Computador",5000.0);
 		Produto p2 = new Produto(null,"Celular",800.0);
 		
@@ -56,9 +64,8 @@ public class LearningSbApplication implements CommandLineRunner {
 		p2.setCategoria(cat1);
 		cat1.getProdutos().addAll(Arrays.asList(p1,p2));
 		
-		categoriaRepository.saveAll(Arrays.asList(cat1));
+		categoriaRepository.saveAll(Arrays.asList(cat1,cat2,cat3,cat4,cat5,cat6,cat7,cat8,cat9));
 		Cliente c1=new Cliente("São Luis","MA",null,"Lucas", "lucasvufma@gmail.com","60908095350",TipoCliente.CLIENTEFISICO,"98602-4266",null);
-		
 		Endereco e1= new Endereco(null,"logradouro teste","201","Edf Monte Rainier", "Calhau","65073143",c1);
 		Endereco e2= new Endereco(null,"logradouro teste","802","Edf Monte Castelo", "Cohama","65087111",c1);
 		
